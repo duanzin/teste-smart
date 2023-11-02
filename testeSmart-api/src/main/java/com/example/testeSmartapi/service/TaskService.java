@@ -21,37 +21,29 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    // Get all tasks
     public List<TaskModel> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    // Get a specific task by ID
     public Optional<TaskModel> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
-    // Update a task
     public TaskModel updateTask(Long id, TaskModel updatedTask) {
-        // Check if the task with the given ID exists
         if (taskRepository.existsById(id)) {
-            // Set the ID of the updatedTask to the existing task's ID
-            updatedTask.setId(id);
+            updatedTask.setStatus("Finalizada");
             return taskRepository.save(updatedTask);
         } else {
-            // Task with the given ID does not exist
             return null;
         }
     }
 
-    // Delete a task by ID
     public boolean deleteTask(Long id) {
-        // Check if the task with the given ID exists
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
-            return true; // Deletion successful
+            return true;
         } else {
-            return false; // Task with the given ID does not exist
+            return false;
         }
     }
 }
