@@ -1,6 +1,8 @@
 package com.example.testeSmartapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +31,13 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public TaskModel updateTask(Long id, TaskModel updatedTask) {
-        if (taskRepository.existsById(id)) {
-            updatedTask.setStatus("Finalizada");
-            return taskRepository.save(updatedTask);
-        } else {
+    public TaskModel updateTask(Long id) {
+        var task = taskRepository.findById(id).orElse(null);
+        if (task == null) {
             return null;
         }
+        task.setStatus("Finalizada");
+        return taskRepository.save(task);
     }
 
     public boolean deleteTask(Long id) {
