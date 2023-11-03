@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import TaskForm from "./components/form";
+import TaskSection from "./components/section";
+import { getTasks } from "./api/route";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        const response = await getTasks();
+        setTasks(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchTasks();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <main>
+        <TaskForm setTasks={setTasks} />
+        {tasks.some((data) => data.favorite) && (
+          <TaskSection
+            name="Pendentes"
+            tasks={tasks.filter((data) => data.status)}
+            setTasks={setTasks}
+          />
+        )}
+        {tasks.some((data) => !data.favorite) && (
+          <TaskSection
+            name="Finalizadas"
+            notes={tasks.filter((data) => !data.status)}
+            setTasks={setTasks}
+          />
+        )}
+      </main>
+  );
 }
 
-export default App
+export default App;
