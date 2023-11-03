@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import com.example.testeSmartapi.model.TaskModel;
 import com.example.testeSmartapi.repository.TaskRepository;
+import com.example.testeSmartapi.utils.utils;
 
 @Service
 public class TaskService {
@@ -31,13 +32,13 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public TaskModel updateTask(Long id) {
-        var task = taskRepository.findById(id).orElse(null);
-        if (task == null) {
+    public TaskModel updateTask(TaskModel newTask, Long id) {
+        var oldTask = taskRepository.findById(id).orElse(null);
+        if (oldTask == null) {
             return null;
         }
-        task.setStatus("Finalizada");
-        return taskRepository.save(task);
+        utils.copyNonNullProperties(newTask, oldTask);
+        return taskRepository.save(newTask);
     }
 
     public boolean deleteTask(Long id) {
