@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { createTask } from "../api/route";
 
-export default function TaskForm({ setTasks }) {
+export default function TaskForm({ setTasks, userId }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    status: "pendente",
+    user_id: userId,
   });
 
   const handleChange = (e) => {
@@ -26,7 +28,6 @@ export default function TaskForm({ setTasks }) {
           description: trimmedDescription,
         };
         const response = await createTask(newTask);
-        console.log(response);
         setTasks(response);
       } catch (error) {
         console.error(error);
@@ -35,6 +36,8 @@ export default function TaskForm({ setTasks }) {
     setFormData({
       title: "",
       description: "",
+      status: "pendente",
+      user_id: userId,
     });
   };
   return (

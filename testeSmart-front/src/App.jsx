@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import TaskForm from "./components/form";
 import TaskSection from "./components/section";
+import AccountForm from "./components/user";
 import { getTasks } from "./api/route";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -20,23 +22,29 @@ function App() {
   }, []);
 
   return (
-      <main>
-        <TaskForm setTasks={setTasks} />
-        {tasks.some((data) => data.favorite) && (
-          <TaskSection
-            name="Pendentes"
-            tasks={tasks.filter((data) => data.status)}
-            setTasks={setTasks}
-          />
-        )}
-        {tasks.some((data) => !data.favorite) && (
-          <TaskSection
-            name="Finalizadas"
-            notes={tasks.filter((data) => !data.status)}
-            setTasks={setTasks}
-          />
-        )}
-      </main>
+    <>
+      {userId ? (
+        <AccountForm setUserId={setUserId} />
+      ) : (
+        <main>
+          <TaskForm setTasks={setTasks} userId={userId}/>
+          {tasks.some((data) => data.status === "pendente") && (
+            <TaskSection
+              name="Pendentes"
+              tasks={tasks.filter((data) => data.status === "pendente")}
+              setTasks={setTasks}
+            />
+          )}
+          {tasks.some((data) => data.status === "finalizada") && (
+            <TaskSection
+              name="Finalizadas"
+              notes={tasks.filter((data) => data.status === "finalizada")}
+              setTasks={setTasks}
+            />
+          )}
+        </main>
+      )}
+    </>
   );
 }
 
