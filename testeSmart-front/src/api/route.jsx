@@ -15,7 +15,7 @@ export async function createTasks(body) {
   return res.data;
 }
 
-export async function deleteNote(id) {
+export async function deleteTask(id) {
   const res = await axios.delete(`${process.env.REACT_APP_API_URL}/tasks/${id}`);
   return res.data;
 }

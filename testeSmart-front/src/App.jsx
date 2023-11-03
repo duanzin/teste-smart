@@ -23,11 +23,11 @@ function App() {
 
   return (
     <>
-      {userId ? (
+      {userId === null ? (
         <AccountForm setUserId={setUserId} />
       ) : (
         <main>
-          <TaskForm setTasks={setTasks} userId={userId}/>
+          <TaskForm setTasks={setTasks} userId={userId} />
           {tasks.some((data) => data.status === "pendente") && (
             <TaskSection
               name="Pendentes"
@@ -49,3 +49,4 @@ function App() {
 }
 
 export default App;
+

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createTask } from "../api/route";
+import { createTasks } from "../api/route";
 
 export default function TaskForm({ setTasks, userId }) {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ export default function TaskForm({ setTasks, userId }) {
           title: trimmedTitle,
           description: trimmedDescription,
         };
-        const response = await createTask(newTask);
+        const response = await createTasks(newTask);
         setTasks(response);
       } catch (error) {
         console.error(error);
